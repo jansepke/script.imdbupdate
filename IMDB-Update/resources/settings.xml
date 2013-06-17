@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<settings>
-	<setting type="lsep" label="30102" />
-	<setting id="enableResume"	type="bool"		default="true"	label="enable resume point" />
-	<setting id="enableDiff"	type="bool"		default="true"	label="enable rating difference" />
-</settings>
