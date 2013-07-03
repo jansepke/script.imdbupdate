@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
 	<setting type="lsep" label="30102" />
-	<setting id="enableResume"	type="bool"		default="true"	label="enable resume point" />
+	<setting id="enableResume"	type="bool"		default="true"	label="enable movie resume point" />
 	<setting id="enableDiff"	type="bool"		default="true"	label="enable rating difference" />
+	<setting id="hideMovie"		type="bool"		default="false"	label="hide movie progress" />
+	<setting id="hideTop250"	type="bool"		default="false"	label="hide Top250 progress" />
 </settings>

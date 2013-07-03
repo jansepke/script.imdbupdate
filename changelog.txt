@@ -1,0 +1,7 @@
+v0.3.3 (2013-06-24):
+- add-on icon added (credits: shedrock)
+- run in background (optional)
+- add start parameters for skinners ( RunScript( script.imdbupdate, movies ) and RunScript( script.imdbupdate, top250 ) )
+
+v0.3.2 (2013-06-23):
+- initial release

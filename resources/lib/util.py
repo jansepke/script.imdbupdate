@@ -10,7 +10,9 @@ import simplejson as json
 addOn = xbmcaddon.Addon("script.imdbupdate")
 addOnName = addOn.getAddonInfo("name")
 addOnVersion = addOn.getAddonInfo("version")
-addOnPath = xbmc.translatePath(addOn.getAddonInfo("profile"))
+addOnProfile = xbmc.translatePath(addOn.getAddonInfo("profile"))
+addOnPath = xbmc.translatePath(addOn.getAddonInfo("path"))
+addOnIcon = os.path.join(addOnPath, "icon.png")
 
 STRINGS = {
     "Never_Checked!": 30200,
@@ -100,18 +102,28 @@ STRINGS = {
     "Top250": 30101
 }
 
+'''Settings'''
 def setting(id):
     return addOn.getSetting(id)
 
+def settingBool(id):
+    return setting(id) == "true"
+
+'''Log'''
 def log(msg):
      xbmc.log("[%s] - %s" % (addOnName, msg.encode('utf-8')))
-  
+
+'''Language String'''
 def l(string_id):
     if string_id in STRINGS:
         return addOn.getLocalizedString(STRINGS[string_id])
     else:
         log('String is missing: %s' % string_id)
         return string_id
+
+'''GUI'''
+def notification(msg):
+    xbmc.executebuiltin("Notification(%s,%s,6000,%s)" % (addOnName, msg.encode('utf-8'), addOnIcon))
 
 def dialogOk(a, b="", c="", d=""):    
     return xbmcgui.Dialog().ok("%s - %s" % (addOnName, a), b, c, d)
@@ -127,6 +139,7 @@ def dialogProgress():
 def dialogSelect(heading, choices):
     return xbmcgui.Dialog().select("%s %s" % (addOnName, heading), choices)
 
+'''JSON'''
 def executeJSON(method, params):
     result = json.loads(xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"%s","params":%s,"id":1}' % (method, params)))
     if "error" in result:
@@ -134,15 +147,18 @@ def executeJSON(method, params):
         result = []
     return result
 
+'''File system'''
 def createAddOnDir():
-    if not(xbmcvfs.exists(addOnPath)):
-        xbmcvfs.mkdir(addOnPath)
+    if not(xbmcvfs.exists(addOnProfile)):
+        xbmcvfs.mkdir(addOnProfile)
 
 def readF(name):
-    return file(os.path.join(addOnPath , name) , "r").read()
+    return file(os.path.join(addOnProfile, name), "r").read()
     
 def writeF(name, data):
-    file(os.path.join(addOnPath , name) , "w").write(str(data))
+    file(os.path.join(addOnProfile, name), "w").write(str(data))
     
 def deleteF(name):
-    xbmcvfs.delete(os.path.join(addOnPath , str(name)))
+    file = os.path.join(addOnProfile, str(name))
+    if xbmcvfs.exists(file):
+        xbmcvfs.delete(file)
