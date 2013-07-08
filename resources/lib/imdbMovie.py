@@ -3,8 +3,7 @@
 # by Jandalf   #
 ################
 
-import urllib2
-from util import *
+import urllib2, json
 
 class imdbMovie(object):
     def __init__(self, imdbID):

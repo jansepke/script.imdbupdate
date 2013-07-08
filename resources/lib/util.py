@@ -140,8 +140,14 @@ def dialogSelect(heading, choices):
     return xbmcgui.Dialog().select("%s %s" % (addOnName, heading), choices)
 
 '''JSON'''
+def getMoviesWith(*fields):
+    params = {'properties':fields, 'sort':{'order':'ascending', 'method':'label', 'ignorearticle':True }}
+    movies = executeJSON('VideoLibrary.GetMovies', params)
+    return movies["result"]["movies"]
+
 def executeJSON(method, params):
-    result = json.loads(xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"%s","params":%s,"id":1}' % (method, params)))
+    data = json.dumps({'jsonrpc':'2.0', 'method':method, 'params':params, 'id':1})
+    result = json.loads(xbmc.executeJSONRPC(data))
     if "error" in result:
         log(str(result["error"]))
         result = []

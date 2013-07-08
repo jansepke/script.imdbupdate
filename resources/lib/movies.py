@@ -14,7 +14,7 @@ ENABLE_DIFF     = settingBool("enableDiff")
 class Movies:
     def start(self):
         resume = self.getResume()
-        movies = self.getMovies()
+        movies = getMoviesWith('imdbnumber', 'votes', 'rating')
         total = len(movies)
         if total > 0:
             self.startProcess(movies, total, resume)
@@ -35,11 +35,6 @@ class Movies:
             deleteF("resume_movies")
             resume = 0
         return resume
-
-    def getMovies(self):
-        movies = executeJSON("VideoLibrary.GetMovies", '{"properties":["imdbnumber","votes","rating"],"sort":{"order":"ascending","method":"label","ignorearticle":true }}')
-        return movies["result"]["movies"]
-
 
     def writeResume(self, count):
         if ENABLE_RESUME:
@@ -89,7 +84,7 @@ class Movies:
                 elif not(self.shouldUpdate(movie, m)):
                     log("%s: %s" % (movie["label"], l("Nothing_to_do_has_already_been_updated!")))
                 else:
-                    executeJSON("VideoLibrary.SetMovieDetails", '{"movieid":%s,"rating":%s,"votes":"%s"}' % (movie["movieid"], m.rating(), m.votes()))
+                    executeJSON('VideoLibrary.SetMovieDetails', {'movieid':movie['movieid'], 'rating':float(m.rating()), 'votes':m.votes()})
                     log("%s: %s %s %s %s %s" % (movie["label"], l("was_updated_to"), m.rating(), l("with"), m.votes(), l("voters!")))
                     result = 1
         return result

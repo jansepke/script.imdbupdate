@@ -20,31 +20,30 @@ class Top250:
         if self.top250 == {}:
            dialogOk(l("Top250"), l("There_was_a_problem_with_the_IMDb_site!"))
         else:
-            movies = self.getMovies()
+            movies = getMoviesWith('imdbnumber', 'top250')
             total = len(movies)
             if total > 0:
                 self.startProcess(movies, total)
             else:
                 dialogOk(l("Info"), l("The_video_library_is_empty_or_the_IMDb_id_doesn't_exist!"))
         return HIDE_TOP250
-    
+
     def getTop250(self):
         top250 = {}
         opener = urllib2.build_opener()
         opener.addheaders = [("User-agent", "Mozilla/5.0")]
-        response = opener.open("http://www.imdb.com/chart/top")
-        if response.getcode() == 200:
-            soup = BeautifulSoup(response)
-            top250 = [tt["href"][7:-1].encode('utf-8') for tt in soup.findAll(href=re.compile("/title/tt")) if tt.parent.parent.parent.name == "tr"]
-            if len(top250) != 250:
-                top250 = {}
-            else:
-                top250 = dict([(val, key + 1) for key, val in enumerate(top250)])
+        try:
+            response = opener.open("http://www.imdb.com/chart/top")
+            if response.getcode() == 200:
+                soup = BeautifulSoup(response)
+                top250 = [tt["href"][7:-1].encode('utf-8') for tt in soup.findAll(href=re.compile("/title/tt")) if tt.parent.parent.parent.name == "tr"]
+                if len(top250) != 250:
+                    top250 = {}
+                else:
+                    top250 = dict([(val, key + 1) for key, val in enumerate(top250)])
+        except:
+            top250 = {}
         return top250
-    
-    def getMovies(self):
-        movies = executeJSON("VideoLibrary.GetMovies", '{"properties" : ["imdbnumber", "top250"], "sort": { "order": "ascending", "method": "label", "ignorearticle": true }}')
-        return movies["result"]["movies"]
             
     def startProcess(self, movies, total):
         stats = {"added": 0, "updated": 0, "removed": 0}
@@ -89,4 +88,4 @@ class Top250:
         return result
     
     def updateMovie(self, movie, position):
-        executeJSON("VideoLibrary.SetMovieDetails", '{"movieid":%s,"top250":%s}' % (movie["movieid"], position))
+        executeJSON('VideoLibrary.SetMovieDetails', {'movieid':movie['movieid'], 'top250':position})
