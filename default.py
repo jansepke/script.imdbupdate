@@ -25,16 +25,20 @@ if __name__ == "__main__":
     
     count = len(sys.argv) - 1
  
-    if count == 1:
-        arg = sys.argv[1].lower()
-        if arg == "top250":
-            Top250().start()
-        elif arg == "movies":
-            Movies().start()
+    if count == 1 or count == 2:
+        typ = sys.argv[1].lower()
+        if count == 2:
+            hidden = sys.argv[2].lower() == "hidden"
+        else:
+            hidden = False
+        if typ == "top250":
+            Top250().start(hidden)
+        elif typ == "movies":
+            Movies().start(hidden)
         else:
             xbmcgui.Dialog().ok("Status","wrong argument")
             gui()
-    elif count > 1:
+    elif count > 2:
         xbmcgui.Dialog().ok("Status","too much arguments")
         gui()
     else:

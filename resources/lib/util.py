@@ -4,7 +4,7 @@
 ################
 
 import xbmc, xbmcaddon, xbmcgui, xbmcvfs
-import os
+import os, datetime
 import simplejson as json
 
 addOn = xbmcaddon.Addon("script.imdbupdate")
@@ -102,16 +102,20 @@ STRINGS = {
     "Top250": 30101
 }
 
-'''Settings'''
-def setting(id):
-    return addOn.getSetting(id)
+'''Abort request'''
+def abortRequested():
+    return xbmc.abortRequested
 
-def settingBool(id):
-    return setting(id) == "true"
+'''Settings'''
+def setting(name):
+    return addOn.getSetting(name)
+
+def settingBool(name):
+    return setting(name) == "true"
 
 '''Log'''
 def log(msg):
-     xbmc.log("[%s] - %s" % (addOnName, msg.encode('utf-8')))
+    xbmc.log("[%s] - %s" % (addOnName, msg.encode('utf-8')))
 
 '''Language String'''
 def l(string_id):
@@ -123,7 +127,7 @@ def l(string_id):
 
 '''GUI'''
 def notification(msg):
-    xbmc.executebuiltin("Notification(%s,%s,6000,%s)" % (addOnName, msg.encode('utf-8'), addOnIcon))
+    xbmc.executebuiltin("Notification(%s,%s,5000,%s)" % (addOnName, msg.encode('utf-8'), addOnIcon))
 
 def dialogOk(a, b="", c="", d=""):    
     return xbmcgui.Dialog().ok("%s - %s" % (addOnName, a), b, c, d)
@@ -153,6 +157,10 @@ def executeJSON(method, params):
         result = []
     return result
 
+'''Write last run date'''
+def writeDate(name):
+    writeF("last_run_" + name, datetime.date.today())
+
 '''File system'''
 def createAddOnDir():
     if not(xbmcvfs.exists(addOnProfile)):
@@ -165,6 +173,6 @@ def writeF(name, data):
     file(os.path.join(addOnProfile, name), "w").write(str(data))
     
 def deleteF(name):
-    file = os.path.join(addOnProfile, str(name))
-    if xbmcvfs.exists(file):
-        xbmcvfs.delete(file)
+    delFile = os.path.join(addOnProfile, str(name))
+    if xbmcvfs.exists(delFile):
+        xbmcvfs.delete(delFile)

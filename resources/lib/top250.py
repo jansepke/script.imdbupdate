@@ -10,7 +10,10 @@ from util import *
 HIDE_TOP250 = settingBool("hideTop250")
 
 class Top250:
-    def start(self):
+    def start(self, hidden=False):
+        if hidden:
+            global HIDE_TOP250
+            HIDE_TOP250 = True
         if HIDE_TOP250:
             notification(l("Started_updating_tv_shows_ratings"))
         else:
@@ -18,7 +21,7 @@ class Top250:
             self.progress.update(0, l("Importing_current_IMDb_Top250"))
         self.top250 = self.getTop250()
         if self.top250 == {}:
-           dialogOk(l("Top250"), l("There_was_a_problem_with_the_IMDb_site!"))
+            dialogOk(l("Top250"), l("There_was_a_problem_with_the_IMDb_site!"))
         else:
             movies = getMoviesWith('imdbnumber', 'top250')
             total = len(movies)
@@ -34,6 +37,9 @@ class Top250:
         opener.addheaders = [("User-agent", "Mozilla/5.0")]
         try:
             response = opener.open("http://www.imdb.com/chart/top")
+        except urllib2.URLError:
+            top250 = {}
+        else:
             if response.getcode() == 200:
                 soup = BeautifulSoup(response)
                 top250 = [tt["href"][7:-1].encode('utf-8') for tt in soup.findAll(href=re.compile("/title/tt")) if tt.parent.parent.parent.name == "tr"]
@@ -41,26 +47,25 @@ class Top250:
                     top250 = {}
                 else:
                     top250 = dict([(val, key + 1) for key, val in enumerate(top250)])
-        except:
-            top250 = {}
         return top250
             
     def startProcess(self, movies, total):
         stats = {"added": 0, "updated": 0, "removed": 0}
         for count, movie in enumerate(movies):
+            if abortRequested() or (not(HIDE_TOP250) and self.progress.iscanceled()):
+                break
             if not(HIDE_TOP250):
-                if self.progress.iscanceled():
-                    self.progress.close()
-                    dialogOk(l("Abort"), l("The_scraping_was_canceled_by_user!"))
-                    break
                 self.progress.update((count * 100) // total, "%s %s" % (l("Searching_for"), movie["label"]))
             result = self.checkMovie(movie)
             if result != "":
                 stats[result] += 1
+        else:
+            writeDate("top250")
         log("%s: %s %s, %s %s %s %s" % (l("Movies_IMDb_Top250_summary"), stats["updated"], l("were_updated"), stats["added"], l("were_added_and"), stats["removed"], l("were_removed!")))
         if HIDE_TOP250:
             notification("%s %s" % (l("Completed"), l("Top250")))
         else:
+            self.progress.close()
             dialogOk(l("Completed"), l("Movies_IMDb_Top250_summary"), "%s %s" % (stats["updated"], l("were_updated")), "%s %s %s %s" % (stats["added"], l("were_added_and"), stats["removed"], l("were_removed!")))
 
     def checkMovie(self, movie):

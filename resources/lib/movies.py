@@ -6,32 +6,34 @@
 from util import *
 from imdbMovie import imdbMovie
 
-RATING_DIFF     = 0.001
-HIDE_MOVIE      = settingBool("hideMovie")
-ENABLE_RESUME   = settingBool("enableResume") and not(HIDE_MOVIE)
-ENABLE_DIFF     = settingBool("enableDiff")
+RATING_DIFF = 0.001
+HIDE_MOVIES = settingBool("hideMovies")
+ENABLE_RESUME = settingBool("enableResume") and not(HIDE_MOVIES)
+ENABLE_DIFF = settingBool("enableDiff")
 
 class Movies:
-    def start(self):
-        resume = self.getResume()
+    def start(self, hidden=False):
+        if hidden:
+            global HIDE_MOVIES
+            HIDE_MOVIES = True
         movies = getMoviesWith('imdbnumber', 'votes', 'rating')
         total = len(movies)
         if total > 0:
-            self.startProcess(movies, total, resume)
+            self.startProcess(movies, total)
         else:
             dialogOk(l("Info"), l("The_video_library_is_empty_or_the_IMDb_id_doesn't_exist!"))
-        return HIDE_MOVIE
+        return HIDE_MOVIES
             
     def getResume(self):
         wantResume = False
-        if ENABLE_RESUME and not(HIDE_MOVIE):
+        if ENABLE_RESUME and not(HIDE_MOVIES):
             try:
                 resume = int(readF("resume_movies"))
                 if resume > 0:
                     wantResume = dialogYN(l("The_previous_scraping_was_interrupted!"), l("Do_you_want_to_resume?"))
-            except IOError, ValueError:
+            except (IOError, ValueError):
                 resume = 0
-        if not(wantResume) or not(ENABLE_RESUME) or HIDE_MOVIE:
+        if not(wantResume) or not(ENABLE_RESUME) or HIDE_MOVIES:
             deleteF("resume_movies")
             resume = 0
         return resume
@@ -40,34 +42,30 @@ class Movies:
         if ENABLE_RESUME:
             writeF("resume_movies", count)
 
-    def startProcess(self, movies, total, resume):
+    def startProcess(self, movies, total):
         updated = 0
-        unfinished = False
-        if HIDE_MOVIE:
+        resume = self.getResume()
+        if HIDE_MOVIES:
             notification(l("Started_updating_movies_ratings"))
         else:
             progress = dialogProgress()
         for count, movie in enumerate(movies):
-            if HIDE_MOVIE:
-                updated += self.updateMovie(movie)
-            elif progress.iscanceled():
+            if abortRequested() or (not(HIDE_MOVIES) and progress.iscanceled()):
                 self.writeResume(count)
-                unfinished = True
                 break
-            elif count >= resume:
-                progress.update((count * 100) // total, "%s %s" % (l("Searching_for"), movie["label"]))
+            if count >= resume:
+                if not(HIDE_MOVIES):
+                    progress.update((count * 100) // total, "%s %s" % (l("Searching_for"), movie["label"]))
                 updated += self.updateMovie(movie)
-        if not(HIDE_MOVIE):
-            progress.close()
-        if unfinished:
-            dialogOk(l("Abort"), l("The_scraping_was_canceled_by_user!"))
         else:
             deleteF("resume_movies")
+            writeDate("movies")
         text = "%s: %s %s %s %s!" % (l("Movies_ratings_summary"), updated, l("of"), total, l("were_updated"))
         log(text)
-        if HIDE_MOVIE:
+        if HIDE_MOVIES:
             notification(text)
         else:
+            progress.close()
             dialogOk(l("Completed"), text)
                 
     def updateMovie(self, movie):
@@ -75,24 +73,22 @@ class Movies:
         if movie["imdbnumber"] == "":
             log("%s: %s" % (movie["label"], l("IMDb_id_was_not_found_in_your_database!")))
         else:
-            m = imdbMovie(movie["imdbnumber"])
-            if m.error():
+            imdb = imdbMovie(movie["imdbnumber"])
+            if imdb.error():
                 log("%s: %s" % (movie["label"], l("There_was_a_problem_with_the_IMDb_site!")))
+            elif (imdb.votes() == "0") or (imdb.votes() == "N/A"):
+                log("%s: %s" % (movie["label"], l("Nothing_to_do_the_current_rating_is_zero!")))
+            elif not(self.shouldUpdate(movie, imdb)):
+                log("%s: %s" % (movie["label"], l("Nothing_to_do_has_already_been_updated!")))
             else:
-                if (m.votes() == "0") or (m.votes() == "N/A"):
-                    log("%s: %s" % (movie["label"], l("Nothing_to_do_the_current_rating_is_zero!")))
-                elif not(self.shouldUpdate(movie, m)):
-                    log("%s: %s" % (movie["label"], l("Nothing_to_do_has_already_been_updated!")))
-                else:
-                    executeJSON('VideoLibrary.SetMovieDetails', {'movieid':movie['movieid'], 'rating':float(m.rating()), 'votes':m.votes()})
-                    log("%s: %s %s %s %s %s" % (movie["label"], l("was_updated_to"), m.rating(), l("with"), m.votes(), l("voters!")))
-                    result = 1
+                executeJSON('VideoLibrary.SetMovieDetails', {'movieid':movie['movieid'], 'rating':float(imdb.rating()), 'votes':imdb.votes()})
+                log("%s: %s %s %s %s %s" % (movie["label"], l("was_updated_to"), imdb.rating(), l("with"), imdb.votes(), l("voters!")))
+                result = 1
         return result
     
     def shouldUpdate(self, old, new):
         oldVotes = float(old["votes"].replace(",", ""))
         newVotes = float(new.votes().replace(",", ""))
-        result = False
         result = round(float(old["rating"]), 1) != round(float(new.rating()), 1)
         if not(result):
             if ENABLE_DIFF:

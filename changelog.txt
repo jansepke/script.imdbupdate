@@ -1,3 +1,7 @@
+v0.4.1 (2013-07-11):
+- run periodically (optional)
+- stop script if XBMC wants to exit
+
 v0.4.0 (2013-07-03):
 - add-on icon added (credits: shedrock)
 - run in background (optional)
