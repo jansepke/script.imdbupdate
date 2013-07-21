@@ -87,7 +87,10 @@ class Movies:
         return result
     
     def shouldUpdate(self, old, new):
-        oldVotes = float(old["votes"].replace(",", ""))
+        if old["votes"] == '':
+            oldVotes = 0
+        else:
+            oldVotes = float(old["votes"].replace(",", ""))
         newVotes = float(new.votes().replace(",", ""))
         result = round(float(old["rating"]), 1) != round(float(new.rating()), 1)
         if not(result):

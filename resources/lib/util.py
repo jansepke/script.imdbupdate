@@ -153,7 +153,7 @@ def executeJSON(method, params):
     data = json.dumps({'jsonrpc':'2.0', 'method':method, 'params':params, 'id':1})
     result = json.loads(xbmc.executeJSONRPC(data))
     if "error" in result:
-        log(str(result["error"]))
+        log("method: " + method + "params: " + params + " throws: " + str(result["error"]))
         result = []
     return result
 

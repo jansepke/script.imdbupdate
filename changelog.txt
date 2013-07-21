@@ -1,3 +1,6 @@
+v0.4.2 (2013-07-21):
+- Bug fixes
+
 v0.4.1 (2013-07-11):
 - run periodically (optional)
 - stop script if XBMC wants to exit
@@ -5,7 +8,7 @@ v0.4.1 (2013-07-11):
 v0.4.0 (2013-07-03):
 - add-on icon added (credits: shedrock)
 - run in background (optional)
-- add start parameters for skinners ( RunScript( script.imdbupdate, movies ) and RunScript( script.imdbupdate, top250 ) )
+- start parameters for skinners
 
 v0.3.2 (2013-06-23):
 - initial release

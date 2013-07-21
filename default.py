@@ -23,12 +23,13 @@ if __name__ == "__main__":
     log("Starting %s v%s" % (addOnName , addOnVersion))
     createAddOnDir()
     
-    count = len(sys.argv) - 1
+    args = sys.argv
+    count = len(args) - 1
  
     if count == 1 or count == 2:
-        typ = sys.argv[1].lower()
+        typ = args[1].lower()
         if count == 2:
-            hidden = sys.argv[2].lower() == "hidden"
+            hidden = args[2].lower() == "hidden"
         else:
             hidden = False
         if typ == "top250":
