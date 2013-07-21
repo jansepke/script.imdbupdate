@@ -3,7 +3,7 @@
 # by Jandalf   #
 ################
 
-import urllib2
+import urllib2, socket
 import simplejson as json
 
 class imdbMovie(object):
@@ -17,7 +17,7 @@ class imdbMovie(object):
     def getData(self):
         try:
             response = urllib2.urlopen("http://www.omdbapi.com/?i=%s" % self.__imdbID)
-        except urllib2.URLError:
+        except (urllib2.URLError, socket.timeout):
             self.__error = True
         else:
             if response.getcode() == 200:

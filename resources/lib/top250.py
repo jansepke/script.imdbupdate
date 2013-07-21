@@ -3,7 +3,7 @@
 # by Jandalf   #
 ################
 
-import urllib2, re
+import urllib2, re, socket
 from BeautifulSoup import BeautifulSoup
 from util import *
 
@@ -37,7 +37,7 @@ class Top250:
         opener.addheaders = [("User-agent", "Mozilla/5.0")]
         try:
             response = opener.open("http://www.imdb.com/chart/top")
-        except urllib2.URLError:
+        except (urllib2.URLError, socket.timeout):
             top250 = {}
         else:
             if response.getcode() == 200:
