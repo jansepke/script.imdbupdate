@@ -5,6 +5,7 @@
 
 from util import *
 from imdbMovie import imdbMovie
+import httplib, urlparse
 
 RATING_DIFF = 0.001
 HIDE_MOVIES = settingBool("hideMovies")
@@ -49,6 +50,8 @@ class Movies:
             notification(l("Started_updating_movies_ratings"))
         else:
             progress = dialogProgress()
+        url = urlparse.urlparse("http://www.omdbapi.com")
+        httphandler = httplib.HTTPConnection(url.netloc)
         for count, movie in enumerate(movies):
             if abortRequested() or (not(HIDE_MOVIES) and progress.iscanceled()):
                 self.writeResume(count)
@@ -56,7 +59,7 @@ class Movies:
             if count >= resume:
                 if not(HIDE_MOVIES):
                     progress.update((count * 100) // total, "%s %s" % (l("Searching_for"), movie["label"]))
-                updated += self.updateMovie(movie)
+                updated += self.updateMovie(movie, httphandler)
         else:
             deleteF("resume_movies")
             writeDate("movies")
@@ -68,12 +71,12 @@ class Movies:
             progress.close()
             dialogOk(l("Completed"), text)
                 
-    def updateMovie(self, movie):
+    def updateMovie(self, movie, httphandler):
         result = 0
         if movie["imdbnumber"] == "":
             log("%s: %s" % (movie["label"], l("IMDb_id_was_not_found_in_your_database!")))
         else:
-            imdb = imdbMovie(movie["imdbnumber"])
+            imdb = imdbMovie(movie["imdbnumber"], httphandler)
             if imdb.error():
                 log("%s: %s" % (movie["label"], l("There_was_a_problem_with_the_IMDb_site!")))
             elif (imdb.votes() == "0") or (imdb.votes() == "N/A"):

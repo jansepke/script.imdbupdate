@@ -4,8 +4,7 @@
 ################
 
 import xbmc, xbmcaddon, xbmcgui, xbmcvfs
-import os, datetime
-import simplejson as json
+import os, datetime, json
 
 addOn = xbmcaddon.Addon("script.imdbupdate")
 addOnName = addOn.getAddonInfo("name")
@@ -129,7 +128,7 @@ def l(string_id):
 def notification(msg):
     xbmc.executebuiltin("Notification(%s,%s,5000,%s)" % (addOnName, msg.encode('utf-8'), addOnIcon))
 
-def dialogOk(a, b="", c="", d=""):    
+def dialogOk(a, b="", c="", d=""):
     return xbmcgui.Dialog().ok("%s - %s" % (addOnName, a), b, c, d)
 
 def dialogYN(a="", b="", c=""):
@@ -153,7 +152,7 @@ def executeJSON(method, params):
     data = json.dumps({'jsonrpc':'2.0', 'method':method, 'params':params, 'id':1})
     result = json.loads(xbmc.executeJSONRPC(data))
     if "error" in result:
-        log("method: " + method + "params: " + params + " throws: " + str(result["error"]))
+        log("method: " + method + "params: " + str(params) + " throws: " + str(result["error"]))
         result = []
     return result
 
