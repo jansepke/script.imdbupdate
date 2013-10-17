@@ -1,3 +1,7 @@
+v0.4.5 (2013-10-17):
+- adapt to changes at the IMDb Top250 site
+- Bug fixes
+
 v0.4.4 (2013-08-19):
 - much faster rating fetching (up to 2x)
 - Bug fixes

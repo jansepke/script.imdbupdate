@@ -10,6 +10,9 @@ def shouldRun(name):
     try:
         lastRun = datetime.datetime.strptime(readF("last_run_" + name), "%Y-%m-%d").date()
         result = datetime.date.today() >= (lastRun + datetime.timedelta(7))
+    except TypeError:
+        lastRun = datetime(*(time.strptime(readF("last_run_" + name), "%Y-%m-%d")[0:6])).date()
+        result = datetime.date.today() >= (lastRun + datetime.timedelta(7))
     except (IOError, ValueError):
         result = True
     return result

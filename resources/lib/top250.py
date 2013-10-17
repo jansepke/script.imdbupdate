@@ -15,7 +15,7 @@ class Top250:
             global HIDE_TOP250
             HIDE_TOP250 = True
         if HIDE_TOP250:
-            notification(l("Started_updating_tv_shows_ratings"))
+            notification(l("Importing_current_IMDb_Top250"))
         else:
             self.progress = dialogProgress()
             self.progress.update(0, l("Importing_current_IMDb_Top250"))
@@ -42,7 +42,7 @@ class Top250:
         else:
             if response.getcode() == 200:
                 soup = BeautifulSoup(response)
-                top250 = [tt["href"][7:-1].encode('utf-8') for tt in soup.findAll(href=re.compile("/title/tt")) if tt.parent.parent.parent.name == "tr"]
+                top250 = [tt["href"][7:16].encode('utf-8') for tt in soup.findAll(href=re.compile("/title/tt"), title=True) if tt.parent.parent.name == "tr"]
                 if len(top250) != 250:
                     top250 = {}
                 else:

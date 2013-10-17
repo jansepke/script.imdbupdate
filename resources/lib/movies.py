@@ -5,7 +5,7 @@
 
 from util import *
 from imdbMovie import imdbMovie
-import httplib, urlparse
+import httplib
 
 RATING_DIFF = 0.001
 HIDE_MOVIES = settingBool("hideMovies")
@@ -50,8 +50,7 @@ class Movies:
             notification(l("Started_updating_movies_ratings"))
         else:
             progress = dialogProgress()
-        url = urlparse.urlparse("http://www.omdbapi.com")
-        httphandler = httplib.HTTPConnection(url.netloc)
+        httphandler = httplib.HTTPConnection("www.omdbapi.com")
         for count, movie in enumerate(movies):
             if abortRequested() or (not(HIDE_MOVIES) and progress.iscanceled()):
                 self.writeResume(count)
@@ -95,10 +94,7 @@ class Movies:
         else:
             oldVotes = float(old["votes"].replace(",", ""))
         newVotes = float(new.votes().replace(",", ""))
-        result = round(float(old["rating"]), 1) != round(float(new.rating()), 1)
-        if not(result):
-            if ENABLE_DIFF:
-                result = ((oldVotes > newVotes) or (round(oldVotes * (1 + RATING_DIFF)) < newVotes))
-            else:
-                result = oldVotes != newVotes
+        oldRating = round(float(old["rating"]), 1)
+        newRating = round(float(new.rating()), 1)
+        result = oldRating != newRating or (ENABLE_DIFF and ((oldVotes > newVotes) or (round(oldVotes * (1 + RATING_DIFF)) < newVotes))) or oldVotes != newVotes
         return result
