@@ -98,7 +98,8 @@ STRINGS = {
     "Don't_ask_any_confirmation_run_immediately": 30104,
     "TV_Shows": 30103,
     "Movies": 30102,
-    "Top250": 30101
+    "Top250": 30101,
+    "Show Top250": 30202
 }
 
 '''Abort request'''

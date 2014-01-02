@@ -11,11 +11,14 @@ import sys
 def gui():
     stop = False
     while not(stop):
-        choice = dialogSelect(addOnVersion, [l("Top250"), l("Movies"), l("Exit")])
+        choice = dialogSelect(addOnVersion, [l("Top250"), l("Movies"), l("Show Top250"), l("Exit")])
         if choice == 0:
             stop = Top250().start()
         elif choice == 1:
             stop = Movies().start()
+        elif choice == 2:
+            xbmc.executebuiltin('XBMC.ActivateWindow(10025,special://home/addons/script.imdbupdate/resources/Top250.xsp,return)')
+            break
         else:
             break
 
