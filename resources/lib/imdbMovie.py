@@ -19,7 +19,7 @@ class imdbMovie(object):
         try:
             httphandler.request("GET", "/?i=%s" % self.__imdbID)
             response = httphandler.getresponse()
-        except (httplib.HTTPException, socket.timeout, socket.gaierror):
+        except (httplib.HTTPException, socket.timeout, socket.gaierror, socket.error):
             self.__error = True
         else:
             if response.status == 200:
