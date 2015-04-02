@@ -8,9 +8,16 @@ import time, datetime
 
 def shouldRun(name):
     try:
-        lastRun = datetime.datetime.strptime(readF("last_run_" + name), "%Y-%m-%d").date()
-        result = datetime.date.today() >= (lastRun + datetime.timedelta(7))
-    except (IOError, ValueError, TypeError):
+        fileContent = readF("last_run_" + name)
+        log("Content of last_run_%s: %s" % (name, fileContent))
+        structTime  = time.strptime(fileContent, '%Y-%m-%d')
+        lastRun = datetime.datetime(*structTime[:6])
+        log("Parsed date: %s" % (lastRun))
+        now = datetime.datetime.today()
+        log("Now: %s" % (now))
+        result = now >= (lastRun + datetime.timedelta(7))
+    except (IOError, ValueError, TypeError) as e:
+       	log("Error while reading file: %s" % (str(e)))
         result = True
     return result
 
