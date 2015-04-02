@@ -7,6 +7,7 @@ from resources.lib.top250 import Top250
 from resources.lib.movies import Movies
 from resources.lib.util import *
 import sys
+import time
 
 def gui():
     stop = False
@@ -38,6 +39,10 @@ if __name__ == "__main__":
         if typ == "top250":
             Top250().start(hidden)
         elif typ == "movies":
+            Movies().start(hidden)
+        elif typ == "both":
+            Top250().start(hidden)
+            time.sleep(10)
             Movies().start(hidden)
         else:
             xbmcgui.Dialog().ok("Status","wrong argument")
