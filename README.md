@@ -23,4 +23,5 @@ Create a button with the function:
 ```
 RunScript( script.imdbupdate, movies [,hidden] )
 RunScript( script.imdbupdate, top250 [,hidden] )
+RunScript( script.imdbupdate, all [,hidden] )
 ```

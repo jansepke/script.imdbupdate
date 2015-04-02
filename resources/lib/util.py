@@ -117,6 +117,10 @@ def settingBool(name):
 def log(msg):
     xbmc.log("[%s] - %s" % (addOnName, msg.encode('utf-8')))
 
+'''Log Debug'''
+def logDebug(msg):
+    xbmc.log("[%s] - %s" % (addOnName, msg.encode('utf-8')), level=xbmc.LOGDEBUG)
+
 '''Language String'''
 def l(string_id):
     if string_id in STRINGS:

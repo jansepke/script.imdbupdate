@@ -36,11 +36,12 @@ if __name__ == "__main__":
             hidden = args[2].lower() == "hidden"
         else:
             hidden = False
+        
         if typ == "top250":
             Top250().start(hidden)
         elif typ == "movies":
             Movies().start(hidden)
-        elif typ == "both":
+        elif typ == "all":
             Top250().start(hidden)
             time.sleep(10)
             Movies().start(hidden)
