@@ -11,7 +11,7 @@
 		<platform>all</platform>
 		<summary lang="en">Updates movie ratings and Top250 from IMDB.</summary>
 		<forum>http://forum.xbmc.org/showthread.php?tid=167754</forum>
-		<source>https://github.com/Jandalf/IMDB-Update</source>
+		<source>https://github.com/Jandalf/script.imdbupdate</source>
 		<license>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</license>
 	</extension>
 </addon>

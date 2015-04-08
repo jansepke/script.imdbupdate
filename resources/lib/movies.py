@@ -27,14 +27,14 @@ class Movies:
             
     def getResume(self):
         wantResume = False
-        if ENABLE_RESUME and not(HIDE_MOVIES):
+        if ENABLE_RESUME:
             try:
                 resume = int(readF("resume_movies"))
                 if resume > 0:
                     wantResume = dialogYN(l("The_previous_scraping_was_interrupted!"), l("Do_you_want_to_resume?"))
             except (IOError, ValueError):
                 resume = 0
-        if not(wantResume) or not(ENABLE_RESUME) or HIDE_MOVIES:
+        if not(wantResume) or not(ENABLE_RESUME):
             deleteF("resume_movies")
             resume = 0
         return resume

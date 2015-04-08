@@ -3,7 +3,7 @@
 # by Jandalf   #
 ################
 
-import xbmc, xbmcaddon, xbmcgui, xbmcvfs
+import xbmc, xbmcaddon, xbmcgui, xbmcvfs, csv
 import os, datetime, json
 
 addOn = xbmcaddon.Addon("script.imdbupdate")
@@ -175,6 +175,11 @@ def readF(name):
     
 def writeF(name, data):
     file(os.path.join(addOnProfile, name), "w").write(str(data))
+
+def writeCSV(name, data):
+    with open(os.path.join(addOnProfile, name), 'wb') as fp:
+        a = csv.writer(fp, delimiter=';')
+        a.writerows(data)
     
 def deleteF(name):
     delFile = os.path.join(addOnProfile, str(name))
