@@ -5,6 +5,7 @@
 
 from resources.lib.top250 import Top250
 from resources.lib.movies import Movies
+from resources.lib.mpaa import Mpaa
 from resources.lib.util import *
 import sys
 import time
@@ -12,7 +13,7 @@ import time
 def gui():
     stop = False
     while not(stop):
-        choice = dialogSelect(addOnVersion, [l("Top250"), l("Movies"), l("Show Top250"), l("Exit")])
+        choice = dialogSelect(addOnVersion, [l("Top250"), l("Movies"), l("Show Top250"), l("MPAA Update"), l("Exit")])
         if choice == 0:
             stop = Top250().start()
         elif choice == 1:
@@ -20,6 +21,8 @@ def gui():
         elif choice == 2:
             xbmc.executebuiltin('XBMC.ActivateWindow(10025,special://home/addons/script.imdbupdate/resources/Top250.xsp,return)')
             break
+        elif choice == 3:
+            stop = Mpaa().start()
         else:
             break
 
