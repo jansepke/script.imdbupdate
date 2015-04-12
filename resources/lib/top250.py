@@ -68,7 +68,7 @@ class Top250:
         util.log("Movies IMDb Top250 summary: updated: %(updated)s, added: %(added)s, removed: %(removed)s, missing: %(missing)s" % stats)
 
         if HIDE_TOP250:
-            notification("%s %s" % (l("Completed"), l("Top250")))
+            util.notification("%s %s" % (l("Completed"), l("Top250")))
         else:
             util.dialogOk(l("Completed"), l("Movies_IMDb_Top250_summary"), "%s %s" % (stats["updated"], l("were_updated")), "%s %s %s %s" % (stats["added"], l("were_added_and"), stats["removed"], l("were_removed!")))
 

@@ -1,3 +1,6 @@
+v0.7.1 (2015-04-12):
+- fix: 'notification' is not defined error
+
 v0.7.0 (2015-04-12):
 - new feature: write missingTop250.csv
 - new feature: update MPAA rating for Movies (Credits to loomes)
