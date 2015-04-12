@@ -44,10 +44,14 @@ if __name__ == "__main__":
             Top250().start(hidden)
         elif typ == "movies":
             Movies().start(hidden)
+        elif typ == "mpaa":
+            Mpaa().start(hidden)
         elif typ == "all":
             Top250().start(hidden)
             time.sleep(10)
             Movies().start(hidden)
+            time.sleep(10)
+            Mpaa().start(hidden)
         else:
             xbmcgui.Dialog().ok("Status","wrong argument")
             gui()
