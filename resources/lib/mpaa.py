@@ -59,7 +59,7 @@ class Mpaa:
             if ":" in FORM_MPAA:
                 FINAL_RATING = "%s%s" % (FORM_MPAA, mpaa.rating())
             else:
-            	  FINAL_RATING = "%s %s" % (FORM_MPAA, mpaa.rating())
+            	FINAL_RATING = "%s %s" % (FORM_MPAA, mpaa.rating())
             if mpaa.error():
                 log("%s: %s" % (movie["label"], l("There_was_a_problem_with_the_MPAA_site!")))
             elif not(self.shouldUpdate(movie, FINAL_RATING)):

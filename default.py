@@ -13,7 +13,7 @@ import time
 def gui():
     stop = False
     while not(stop):
-        choice = dialogSelect(addOnVersion, [l("Top250"), l("Movies"), l("Show Top250"), l("MPAA Update"), l("Exit")])
+        choice = dialogSelect(addOnVersion, [l("Top250"), l("Movies"), l("Show_Top250"), l("MPAA_Update"), l("Exit")])
         if choice == 0:
             stop = Top250().start()
         elif choice == 1:
@@ -44,10 +44,14 @@ if __name__ == "__main__":
             Top250().start(hidden)
         elif typ == "movies":
             Movies().start(hidden)
+        elif typ == "mpaa":
+            Mpaa().start(hidden)
         elif typ == "all":
             Top250().start(hidden)
             time.sleep(10)
             Movies().start(hidden)
+            time.sleep(10)
+            Mpaa().start(hidden)
         else:
             xbmcgui.Dialog().ok("Status","wrong argument")
             gui()

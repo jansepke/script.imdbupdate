@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
-	<setting type="lsep" label="30102" />
-	<setting id="enableResume"	type="bool"		default="true"	label="enable movie resume point" />
-	<setting id="enableDiff"	type="bool"		default="true"	label="enable rating difference" />
-	<setting id="hideMovies"	type="bool"		default="false"	label="hide movie progress" />
-	<setting id="hideTop250"	type="bool"		default="false"	label="hide Top250 progress" />
-	<setting id="hideMpaa"	type="bool"		default="false"	label="hide Mpaa progress" />
-	<setting id="mpaaLang"	type="labelenum"		values="DE|US"	default="DE"	label="Mpaa Language"/>
-	<setting id="mpaaFormat"	type="labelenum"		values="Rated|USA:|FSK|Germany:"	default="Rated"	label="Mpaa Format"/>
-	<setting id="deamonMovies"	type="bool"		default="false"	label="run Movies periodically (weekly)" />
-	<setting id="deamonTop250"	type="bool"		default="false"	label="run Top250 periodically (weekly)" />
+	<!-- <setting type="lsep" label="30102" /> -->
+	<setting id="enableResume"	type="bool"			default="true"	label="enable movie resume point" />
+	<setting id="enableDiff"	type="bool"			default="true"	label="enable rating difference" />
+	<setting id="mpaaLang"		type="labelenum"	default="DE"	label="Mpaa Language" values="DE|US" />
+	<setting id="mpaaFormat"	type="labelenum"	default="Rated"	label="Mpaa Prefix"	values="Rated|USA:|FSK|Germany:" />
+
+	<setting id="hideMovies"	type="bool"			default="false"	label="hide movie progress" />
+	<setting id="hideTop250"	type="bool"			default="false"	label="hide Top250 progress" />
+	<setting id="hideMpaa"		type="bool"			default="false"	label="hide Mpaa progress" />
+
+	<setting id="deamonMovies"	type="bool"			default="false"	label="run Movies periodically (weekly)" />
+	<setting id="deamonTop250"	type="bool"			default="false"	label="run Top250 periodically (weekly)" />
 </settings>

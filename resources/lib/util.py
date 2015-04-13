@@ -3,7 +3,7 @@
 # by Jandalf   #
 ################
 
-import xbmc, xbmcaddon, xbmcgui, xbmcvfs, csv
+import xbmc, xbmcaddon, xbmcgui, xbmcvfs, urllib2, socket, csv
 import os, datetime, json
 
 addOn = xbmcaddon.Addon("script.imdbupdate")
@@ -99,7 +99,8 @@ STRINGS = {
     "TV_Shows": 30103,
     "Movies": 30102,
     "Top250": 30101,
-    "Show Top250": 30202
+    "Show_Top250": 30202,
+    "MPAA_Update": 30203
 }
 
 '''Abort request'''
@@ -177,11 +178,28 @@ def writeF(name, data):
     file(os.path.join(addOnProfile, name), "w").write(str(data))
 
 def writeCSV(name, data):
-    with open(os.path.join(addOnProfile, name), 'wb') as fp:
-        a = csv.writer(fp, delimiter=';')
-        a.writerows(data)
+    try:
+        with open(os.path.join(addOnProfile, name), 'wb') as fp:
+            a = csv.writer(fp, delimiter=';')
+            a.writerows(data)
+    except IOError:
+        log("Could not write file " + name)
     
 def deleteF(name):
     delFile = os.path.join(addOnProfile, str(name))
     if xbmcvfs.exists(delFile):
         xbmcvfs.delete(delFile)
+
+def request(url):
+    opener = urllib2.build_opener()
+    opener.addheaders = [("User-agent", "Mozilla/5.0")]
+
+    try:
+        response = opener.open(url)
+        if response.getcode() != 200:
+            raise urllib2.HTTPError("Status Code != 200")
+    except (urllib2.URLError, urllib2.HTTPError, socket.timeout):
+        logDebug("Could not connect to " + url)
+        response = None
+
+    return response
