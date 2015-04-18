@@ -1,6 +1,6 @@
 ![](https://raw.githubusercontent.com/Jandalf/script.imdbupdate/master/icon.png)
 
-#IMDb Update (Movie Ratings + Top250 + MPAA)
+##Movie Ratings + Top250 + MPAA
 
 This addon updates the ratings of your movies and the Top250 position from IMDb.
 
