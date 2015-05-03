@@ -34,27 +34,28 @@ if __name__ == "__main__":
     count = len(args) - 1
  
     if count == 1 or count == 2:
-        typ = args[1].lower()
         if count == 2:
             hidden = args[2].lower() == "hidden"
         else:
             hidden = False
+
+        for typ in args[1].lower().split("|"):
+            if typ == "top250":
+                Top250().start(hidden)
+            elif typ == "movies":
+                Movies().start(hidden)
+            elif typ == "mpaa":
+                Mpaa().start(hidden)
+            elif typ == "all":
+                Top250().start(hidden)
+                time.sleep(10)
+                Movies().start(hidden)
+                time.sleep(10)
+                Mpaa().start(hidden)
+            else:
+                xbmcgui.Dialog().ok("Status","wrong argument")
+                gui()
         
-        if typ == "top250":
-            Top250().start(hidden)
-        elif typ == "movies":
-            Movies().start(hidden)
-        elif typ == "mpaa":
-            Mpaa().start(hidden)
-        elif typ == "all":
-            Top250().start(hidden)
-            time.sleep(10)
-            Movies().start(hidden)
-            time.sleep(10)
-            Mpaa().start(hidden)
-        else:
-            xbmcgui.Dialog().ok("Status","wrong argument")
-            gui()
     elif count > 2:
         xbmcgui.Dialog().ok("Status","too much arguments")
         gui()

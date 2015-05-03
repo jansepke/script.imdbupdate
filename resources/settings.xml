@@ -3,8 +3,7 @@
 	<!-- <setting type="lsep" label="30102" /> -->
 	<setting id="enableResume"	type="bool"			default="true"	label="enable movie resume point" />
 	<setting id="enableDiff"	type="bool"			default="true"	label="enable rating difference" />
-	<setting id="mpaaLang"		type="labelenum"	default="DE"	label="Mpaa Language" values="DE|US" />
-	<setting id="mpaaFormat"	type="labelenum"	default="Rated"	label="Mpaa Prefix"	values="Rated|USA:|FSK|Germany:" />
+	<setting id="mpaaLang"		type="labelenum"	default="US"	label="Mpaa System" values="US|DE" />
 
 	<setting id="hideMovies"	type="bool"			default="false"	label="hide movie progress" />
 	<setting id="hideTop250"	type="bool"			default="false"	label="hide Top250 progress" />
