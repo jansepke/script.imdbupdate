@@ -30,7 +30,7 @@ class imdbMpaa(object):
                     if self.__Lang == "DE":
                        data = json.loads(response.read().decode('utf8'))
                        data = str(data)
-                       if data == "100" or data == "200" or data == "300":
+                       if data == "100" or data == "300":
                           self.__error = True
                        else:
                           self.__rating = data
