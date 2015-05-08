@@ -18,7 +18,7 @@ class imdbMpaa(object):
     def getData(self, httphandler):
         try:
             if self.__Lang == "DE":
-                httphandler.request("GET", "/api/imdb_id/%s" % self.__imdbID)
+                httphandler.request("GET", "/api/d40f5ad016fa/imdb_id/%s" % self.__imdbID)
             if self.__Lang == "US":
                 httphandler.request("GET", "/?i=%s" % self.__imdbID)
             response = httphandler.getresponse()
@@ -30,7 +30,7 @@ class imdbMpaa(object):
                     if self.__Lang == "DE":
                        data = json.loads(response.read().decode('utf8'))
                        data = str(data)
-                       if data == "100" or data == "200" or data == "300":
+                       if data == "100" or data == "300":
                           self.__error = True
                        else:
                           self.__rating = data

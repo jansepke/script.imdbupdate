@@ -44,7 +44,10 @@ class Top250:
             return {}
 
         soup = BeautifulSoup(response).find("tbody", {"class": "lister-list"}).findAll("a", href=re.compile("/title/tt"), title=True)
-        top250 = {tt["href"][7:16].encode('utf-8'): {"position": idx, "label": tt.contents[0], "link": "http://www.imdb.com" + tt["href"]} for idx, tt in enumerate(soup, start=1)}
+        top250 = {}
+        for idx, tt in enumerate(soup, start=1):
+            top250[tt["href"][7:16].encode('utf-8')] = {"position": idx, "label": tt.contents[0], "link": "http://www.imdb.com" + tt["href"]}
+            
         return top250 if len(top250) == 250 else {}
             
     def startProcess(self, movies, length):
