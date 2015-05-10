@@ -13,7 +13,7 @@
 		<setting id="mpaaLang"			type="labelenum"	default="US"			label="MPAA system" values="US|DE" />
 		<setting id="hideMpaa"			type="bool"			default="false"			label="hide progress" />
 		<setting id="deamonMpaa"		type="bool"			default="false"			label="run periodically (weekly)" />
-		<setting id="firstMpaaRun"		type="bool"			default="true"			hidden="true" />
+		<setting id="firstMpaaRun"		type="bool"			default="true"			visible="false" />
 	</category>
 
 	<category label="Advanced">
