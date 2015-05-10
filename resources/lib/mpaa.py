@@ -9,6 +9,7 @@ import httplib
 
 HIDE_MPAA = settingBool("hideMpaa")
 LANG_MPAA = addOn.getSetting("mpaaLang")
+FORM_MPAA = addOn.getSetting("mpaaFormat")
 
 class Mpaa:
     def start(self, hidden=False):
@@ -35,10 +36,12 @@ class Mpaa:
 
         if LANG_MPAA == "DE":
             SITEUSE = "altersfreigaben.de"
-            FORM_MPAA = "FSK"
+            if FORM_MPAA == "Default":
+               FORM_MPAA = "germany:"
         if LANG_MPAA == "US":
             SITEUSE = "www.omdbapi.com"
-            FORM_MPAA = "Rated"
+            if FORM_MPAA == "Default":
+               FORM_MPAA = "Rated"
         httphandler = httplib.HTTPConnection(SITEUSE)
 
         for count, movie in enumerate(movies):
@@ -61,7 +64,10 @@ class Mpaa:
             log("%s: %s" % (movie["label"], l("IMDb_id_was_not_found_in_your_database!")))
         else:
             mpaa = imdbMpaa(movie["imdbnumber"], httphandler, LANG_MPAA)
-            FINAL_RATING = "%s %s" % (FORM_MPAA, mpaa.rating())
+            if ":" in FORM_MPAA:
+                FINAL_RATING = "%s%s" % (FORM_MPAA, mpaa.rating())
+            else:
+                FINAL_RATING = "%s %s" % (FORM_MPAA, mpaa.rating())
             if mpaa.error():
                 log("%s: %s" % (movie["label"], l("There_was_a_problem_with_the_MPAA_site!")))
             elif not(self.shouldUpdate(movie, FINAL_RATING)):
