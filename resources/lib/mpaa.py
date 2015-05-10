@@ -11,9 +11,17 @@ HIDE_MPAA       = util.settingBool("hideMpaa")
 LANG_MPAA       = util.setting("mpaaLang")
 FORM_MPAA       = util.setting("mpaaPrefix")
 CHANGED_PREFIX  = util.settingBool("enableMpaaPrefix")
+FIRST_RUN       = util.settingBool("firstMpaaRun")
 
 class Mpaa:
     def start(self, hidden=False):
+        if FIRST_RUN:
+            global LANG_MPAA
+            langs = ["US", "DE"]
+            LANG_MPAA = langs[util.dialogSelect(l("Choose_your_MPAA_system"), langs)]
+            util.setting("mpaaLang", LANG_MPAA)
+            util.settingBool("firstMpaaRun", False)
+
         if hidden:
             global HIDE_MPAA
             HIDE_MPAA = True
@@ -72,7 +80,7 @@ class Mpaa:
         result = 0
 
         if movie["imdbnumber"] == "":
-            util.log("%s: %s" % (movie["label"], l("IMDb_id_was_not_found_in_your_database!")))
+            util.log("%(label)s: IMDb id is missing" % movie)
         else:
             mpaa = imdbMpaa(movie["imdbnumber"], httphandler, LANG_MPAA)
 
@@ -80,11 +88,9 @@ class Mpaa:
 
             if mpaa.error():
                 util.log("%s: %s" % (movie["label"], l("There_was_a_problem_with_the_MPAA_site!")))
-            elif not(movie["mpaa"] != formattedRating):
-                util.log("%s: %s" % (movie["label"], l("Nothing_to_do_has_already_been_updated!")))
-            else:
+            elif movie["mpaa"] != formattedRating:
                 util.executeJSON('VideoLibrary.SetMovieDetails', {'movieid':movie['movieid'], 'mpaa':formattedRating})
-                util.log("%s: %s %s" % (movie["label"], l("was_updated_to"), formattedRating))
+                util.log("%s: updated from %s to %s" % (movie["label"], movie["mpaa"], formattedRating))
                 result = 1
 
         return result
