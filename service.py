@@ -28,6 +28,9 @@ while (not abortRequested()):
     if settingBool("deamonMovies") and shouldRun("movies"):
         time.sleep(10)
         xbmc.executebuiltin("RunScript(script.imdbupdate,movies,hidden)")
+    if settingBool("deamonMpaa") and shouldRun("mpaa"):
+        time.sleep(10)
+        xbmc.executebuiltin("RunScript(script.imdbupdate,mpaa,hidden)")
     for i in range(720):
         if abortRequested():
             break

@@ -7,7 +7,8 @@ import re, util
 from BeautifulSoup import BeautifulSoup
 from util import l
 
-HIDE_TOP250 = util.settingBool("hideTop250")
+HIDE_TOP250  = util.settingBool("hideTop250")
+OPEN_MISSING = util.settingBool("openMissingFile")
 
 class Top250:
     def start(self, hidden=False):
@@ -66,6 +67,8 @@ class Top250:
         else:
             util.writeDate("top250")
             self.createMissingCSV()
+            if OPEN_MISSING:
+                util.openFile("missingTop250.csv")
 
         stats["missing"] = len(self.top250)
         util.log("Movies IMDb Top250 summary: updated: %(updated)s, added: %(added)s, removed: %(removed)s, missing: %(missing)s" % stats)

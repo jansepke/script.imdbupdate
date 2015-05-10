@@ -4,7 +4,7 @@
 ################
 
 import xbmc, xbmcaddon, xbmcgui, xbmcvfs, urllib2, socket, csv
-import os, datetime, json
+import os, datetime, json, subprocess
 
 addOn = xbmcaddon.Addon("script.imdbupdate")
 addOnName = addOn.getAddonInfo("name")
@@ -184,6 +184,9 @@ def writeCSV(name, data):
             a.writerows(data)
     except IOError:
         log("Could not write file " + name)
+
+def openFile(name):
+    subprocess.Popen(os.path.join(addOnProfile, name), shell=True)
     
 def deleteF(name):
     delFile = os.path.join(addOnProfile, str(name))
