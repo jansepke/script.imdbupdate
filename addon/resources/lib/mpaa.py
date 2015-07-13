@@ -77,20 +77,18 @@ class Mpaa:
             util.dialogOk(l("Completed"), text)
                 
     def updateMovie(self, movie, httphandler, LANG_MPAA):
-        result = 0
-
         if movie["imdbnumber"] == "":
-            util.log("%(label)s: IMDb id is missing" % movie)
+            util.logWarning("%(label)s: no IMDb id" % movie)
         else:
             mpaa = imdbMpaa(movie["imdbnumber"], httphandler, LANG_MPAA)
 
             formattedRating = ("%s%s" if ":" in FORM_MPAA else "%s %s") % (FORM_MPAA, mpaa.rating())
 
             if mpaa.error():
-                util.log("%s: %s" % (movie["label"], l("There_was_a_problem_with_the_MPAA_site!")))
+                util.logError("%s: problem with MPAA site" % movie["label"])
             elif movie["mpaa"] != formattedRating:
                 util.executeJSON('VideoLibrary.SetMovieDetails', {'movieid':movie['movieid'], 'mpaa':formattedRating})
                 util.log("%s: updated from %s to %s" % (movie["label"], movie["mpaa"], formattedRating))
-                result = 1
+                return 1
 
-        return result
+        return 0

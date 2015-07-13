@@ -2,6 +2,7 @@
 <settings>
 	<category label="General">
 		<setting type="lsep" label="Movies"/>
+		<setting id="separator"			type="labelenum"	default=" "				label="thousands separator" values=" |.|," />
 		<setting id="hideMovies"		type="bool"			default="false"			label="hide progress" />
 		<setting id="deamonMovies"		type="bool"			default="false"			label="run periodically (weekly)" />
 

@@ -1,5 +1,5 @@
 var path = require('path')
-loadTasks = require('load-grunt-tasks')
+    loadTasks = require('load-grunt-tasks')
 
 module.exports = function(grunt) {
     loadTasks(grunt)
@@ -53,13 +53,8 @@ module.exports = function(grunt) {
                 createTag: false,
                 push: false
             }
-        },
-        changelog: {
-            options: {
-                from: 'db8de4f7c0788454a86dab8a1f335a9d20363118'
-            }
         }
     })
 
-    grunt.registerTask('build', ['bump', 'xmlpoke', 'compress']);
+    grunt.registerTask('build', ['bump', 'xmlpoke', 'compress'])
 }

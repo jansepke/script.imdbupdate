@@ -108,6 +108,10 @@ STRINGS = {
 def abortRequested():
     return xbmc.abortRequested
 
+'''string to float'''
+def stringToFloat(text):
+    return float(text.replace(",", "").replace(".", ""))
+
 '''Settings'''
 def setting(name, newValue = None):
     if newValue is not None:
@@ -121,13 +125,18 @@ def settingBool(name, newValue = None):
     else:
         return setting(name) == "true"
 
-'''Log'''
-def log(msg):
-    xbmc.log("[%s] - %s" % (addOnName, msg.encode('utf-8')))
+'''Logging'''
+def log(msg, level=xbmc.LOGNOTICE):
+    xbmc.log("[%s] - %s" % (addOnName, msg.encode('utf-8')), level=level)
 
-'''Log Debug'''
 def logDebug(msg):
-    xbmc.log("[%s] - %s" % (addOnName, msg.encode('utf-8')), level=xbmc.LOGDEBUG)
+    log(msg, xbmc.LOGDEBUG)
+
+def logWarning(msg):
+    log(msg, xbmc.LOGWARNING)
+
+def logError(msg):
+    log(msg, xbmc.LOGERROR)
 
 '''Language String'''
 def l(string_id):

@@ -1,4 +1,4 @@
-<addon id="script.imdbupdate" name="IMDB Update" version="0.8.2" provider-name="Jandalf">
+<addon id="script.imdbupdate" name="IMDB Update" version="0.8.3" provider-name="Jandalf">
 	<requires>
 		<import addon="xbmc.python" version="2.19.0"/>
 		<import addon="xbmc.gui" version="5.3.0"/>

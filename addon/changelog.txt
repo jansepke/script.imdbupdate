@@ -1,3 +1,8 @@
+v0.8.3 (2015-07-13):
+- new: setting for vote thousands separator
+- chore: better log messages
+- chore: grunt as build system
+
 v0.8.2 (2015-05-27):
 - fix: don't ignore duplicate movies during Top250 update
 

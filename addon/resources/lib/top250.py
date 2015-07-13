@@ -84,7 +84,7 @@ class Top250:
         oldPosition = movie["top250"]
 
         if imdbNumber == "":
-            util.log("%(label)s: IMDb id is missing" % movie)
+            util.logWarning("%(label)s: no IMDb id" % movie)
             return None
 
         if imdbNumber in self.top250:
