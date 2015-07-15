@@ -56,5 +56,5 @@ module.exports = function(grunt) {
         }
     })
 
-    grunt.registerTask('build', ['bump', 'xmlpoke', 'compress'])
+    grunt.registerTask('build', ['bump', 'compress'])
 }
