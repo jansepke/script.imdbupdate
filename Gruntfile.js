@@ -8,14 +8,14 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         watch: {
             scripts: {
-                files: ['addon/**'],
+                files: ['script.imdbupdate/**'],
                 tasks: ['sync']
             },
         },
         sync: {
             main: {
                 files: [{
-                    cwd: 'addon',
+                    cwd: 'script.imdbupdate',
                     src: ['**'],
                     dest: path.join(process.env['HOME'], '/AppData/Roaming/Kodi/addons/<%= pkg.name %>')
                 }],
@@ -28,8 +28,8 @@ module.exports = function(grunt) {
                     archive: 'build/<%= pkg.name %>-<%= pkg.version %>.zip'
                 },
                 files: [{
-                    cwd: 'addon',
-                    src: ['**'],
+                    cwd: '',
+                    src: ['script.imdbupdate/**'],
                     expand: true
                 }]
             }
@@ -41,7 +41,7 @@ module.exports = function(grunt) {
                     value: '<%= pkg.version %>'
                 },
                 files: {
-                    'addon/addon.xml': 'addon/addon.xml'
+                    'script.imdbupdate/addon.xml': 'script.imdbupdate/addon.xml'
                 },
             },
         },
