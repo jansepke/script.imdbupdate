@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/Jandalf/script.imdbupdate/master/addon/icon.png)
+![](https://raw.githubusercontent.com/Jandalf/script.imdbupdate/master/script.imdbupdate/icon.png)
 
 ##Movie Ratings + Top250 + MPAA
 
