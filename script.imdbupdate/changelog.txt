@@ -1,3 +1,6 @@
+v0.8.4 (2015-09-07):
+- fix: format votes error
+
 v0.8.3 (2015-07-13):
 - new: setting for vote thousands separator
 - chore: better log messages

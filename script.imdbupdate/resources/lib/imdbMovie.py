@@ -51,6 +51,17 @@ class imdbMovie(object):
         return (oldRating != newRating) or votesChange
     
     def rating(self):   return self.__rating
-    def votes(self):    return "{:,}".format(self.__votes).replace(",", SEPARATOR)
+    def votes(self):    return self.intWithCommas(self.__votes).replace(",", SEPARATOR)
     def error(self):    return self.__error
     def imdbID(self):   return self.__imdbID
+
+    def intWithCommas(self, x):
+        if type(x) not in [type(0), type(0L)]:
+            raise TypeError("Parameter must be an integer.")
+        if x < 0:
+            return '-' + intWithCommas(-x)
+        result = ''
+        while x >= 1000:
+            x, r = divmod(x, 1000)
+            result = ",%03d%s" % (r, result)
+        return "%d%s" % (x, result)
