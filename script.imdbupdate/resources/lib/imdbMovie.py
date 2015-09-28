@@ -33,7 +33,7 @@ class imdbMovie(object):
                         self.__error = True
                     else:
                         self.__rating = data["imdbRating"]
-                        self.__votes = int(data["imdbVotes"])
+                        self.__votes = int(data["imdbVotes"].replace(",", ""))
                 except:
                     self.__error = True
             else:
