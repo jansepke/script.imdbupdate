@@ -212,6 +212,8 @@ def deleteF(name):
 def request(url):
     opener = urllib2.build_opener()
     opener.addheaders = [("User-agent", "Mozilla/5.0")]
+    if setting("imdbLang"):
+        opener.addheaders = [("Accept-Language", setting("imdbLang"))] 
 
     try:
         response = opener.open(url)
