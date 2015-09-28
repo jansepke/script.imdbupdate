@@ -168,7 +168,7 @@ def dialogSelect(heading, choices):
 def getMoviesWith(*fields):
     params = {'properties':fields, 'sort':{'order':'ascending', 'method':'label', 'ignorearticle':True }}
     movies = executeJSON('VideoLibrary.GetMovies', params)
-    return movies["result"]["movies"]
+    return getattr(movies["result"], 'movies', [])
 
 def executeJSON(method, params):
     data = json.dumps({'jsonrpc':'2.0', 'method':method, 'params':params, 'id':1})
