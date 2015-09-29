@@ -17,7 +17,7 @@ module.exports = function(grunt) {
                 files: [{
                     cwd: 'script.imdbupdate',
                     src: ['**'],
-                    dest: path.join(process.env['HOME'], '/AppData/Roaming/Kodi/addons/<%= pkg.name %>')
+                    dest: path.join(process.env['HOME'], '/.kodi/addons/<%= pkg.name %>')
                 }],
                 verbose: true
             }
