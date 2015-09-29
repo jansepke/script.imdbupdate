@@ -1,3 +1,6 @@
+v0.8.6 (2015-09-29):
+- revert: error if movie library is empty
+
 v0.8.5 (2015-09-28):
 - new: option to set browser language for imdb.com
 - fix: parse votes error
