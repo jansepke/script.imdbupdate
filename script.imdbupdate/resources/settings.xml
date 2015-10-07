@@ -11,7 +11,7 @@
 		<setting id="deamonTop250"		type="bool"			default="false"			label="run periodically (weekly)" />
 
 		<setting type="lsep" label="MPAA"/>
-		<setting id="mpaaLang"			type="labelenum"	default="US"			label="MPAA system" values="US|DE" />
+		<setting id="mpaaLang"			type="labelenum"	default="us"			label="MPAA system" values="us|de|au|nl" />
 		<setting id="hideMpaa"			type="bool"			default="false"			label="hide progress" />
 		<setting id="deamonMpaa"		type="bool"			default="false"			label="run periodically (weekly)" />
 		<setting id="firstMpaaRun"		type="bool"			default="true"			visible="false" />

@@ -6,7 +6,7 @@
 import httplib, socket, json
 
 class imdbMpaa(object):
-    
+
     def __init__(self, imdbID, httphandler, LANG_MPAA):
         self.__rating = ""
         self.__error = False
@@ -17,34 +17,23 @@ class imdbMpaa(object):
 
     def getData(self, httphandler):
         try:
-            if self.__Lang == "DE":
-                httphandler.request("GET", "/api2/s/%s/de/d40f5ad016fa" % self.__imdbID)
-            if self.__Lang == "US":
-                httphandler.request("GET", "/?i=%s" % self.__imdbID)
+            httphandler.request("GET", "/api2/s/%s/%s/d40f5ad016fa" % (self.__imdbID, self.__Lang))
             response = httphandler.getresponse()
         except (httplib.HTTPException, socket.timeout, socket.gaierror, socket.error):
             self.__error = True
-        else:
-            if response.status == 200:
-                try:
-                    if self.__Lang == "DE":
-                       data = json.loads(response.read().decode('utf8'))
-                       data = str(data)
-                       if data == "100" or data == "300":
-                          self.__error = True
-                       else:
-                          self.__rating = data
-                    if self.__Lang == "US":
-                      data = json.loads(response.read().decode('utf8'))
-                      if "error" in data or data["Response"] == "False":
-                        self.__error = True
-                      else:
-                        self.__rating = str(data["Rated"])
-                except:
-                    self.__error = True
-            else:
+        if self.__error == False:
+            try:
+                data = response.read().decode('utf8')
+                data = str(data)
+                if data == "100" or data == "300" or data == "310":
+                   self.__error = True
+                else:
+                   self.__rating = data
+            except:
                 self.__error = True
-    
+        else:
+            self.__error = True
+
     def rating(self):   return self.__rating
     def error(self):    return self.__error
     def imdbID(self):   return self.__imdbID
