@@ -1,3 +1,6 @@
+v0.8.8 (2015-10-07):
+- new: add MPAA ratings for australian and netherlands
+
 v0.8.7 (2015-10-07):
 - chore: use new altersfreigaben.de API
 
