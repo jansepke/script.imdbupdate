@@ -17,7 +17,7 @@ class Mpaa:
     def start(self, hidden=False):
         if FIRST_RUN:
             global LANG_MPAA
-            langs = ["US", "DE"]
+            langs = ["us", "de", "nl", "au"]
             LANG_MPAA = langs[util.dialogSelect(l("Choose_your_MPAA_system"), langs)]
             util.setting("mpaaLang", LANG_MPAA)
             util.settingBool("firstMpaaRun", False)
@@ -45,12 +45,17 @@ class Mpaa:
         else:
             progress = util.dialogProgress()
 
-        if LANG_MPAA == "DE":
-            website = "altersfreigaben.de"
+        website = "altersfreigaben.de"
+        if LANG_MPAA == "de":
             if not CHANGED_PREFIX:
                FORM_MPAA = "germany:"
-        if LANG_MPAA == "US":
-            website = "www.omdbapi.com"
+        if LANG_MPAA == "us":
+            if not CHANGED_PREFIX:
+               FORM_MPAA = "Rated"
+        if LANG_MPAA == "au":
+            if not CHANGED_PREFIX:
+               FORM_MPAA = "australia:"
+        if LANG_MPAA == "nl":
             if not CHANGED_PREFIX:
                FORM_MPAA = "Rated"
 
@@ -75,7 +80,7 @@ class Mpaa:
         else:
             progress.close()
             util.dialogOk(l("Completed"), text)
-                
+
     def updateMovie(self, movie, httphandler, LANG_MPAA):
         if movie["imdbnumber"] == "":
             util.logWarning("%(label)s: no IMDb id" % movie)
