@@ -4,7 +4,8 @@ var gulp = require('gulp'),
   runSequence = require('run-sequence'),
   bump = require('gulp-bump'),
   cheerio = require('gulp-cheerio'),
-  release = require('gulp-github-release');
+  release = require('gulp-github-release'),
+  git = require('gulp-git');
 
 gulp.task('compress', function () {
   var pkg = require('./package.json');
@@ -54,5 +55,18 @@ gulp.task('github-release', function () {
 });
 
 gulp.task('release', function (callback) {
-  runSequence('build', 'github-release', callback);
+  runSequence('build', 'commit', 'push', 'github-release', callback);
+});
+
+gulp.task('commit', function () {
+  var pkg = require('./package.json');
+
+  return gulp.src(['./package.json', 'script.imdbupdate/addon.xml'])
+    .pipe(git.commit('chore: release version ' + pkg.version));
+});
+
+gulp.task('push', function () {
+  git.push('origin', 'master', function (err) {
+    if (err) throw err;
+  });
 });
