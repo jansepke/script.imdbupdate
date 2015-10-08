@@ -1,6 +1,6 @@
 {
   "name": "script.imdbupdate",
-  "version": "0.8.8",
+  "version": "0.8.9",
   "description": "Updates movie ratings and Top250 from IMDB.",
   "repository": {
     "type": "git",
