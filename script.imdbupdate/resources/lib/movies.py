@@ -4,7 +4,7 @@
 ################
 
 from imdbMovie import imdbMovie
-import httplib, util
+import util
 
 HIDE_MOVIES = util.settingBool("hideMovies")
 ENABLE_RESUME = util.settingBool("enableResume") and not(HIDE_MOVIES)
@@ -54,8 +54,6 @@ class Movies:
         else:
             progress = util.dialogProgress()
 
-        httphandler = httplib.HTTPConnection("www.omdbapi.com")
-
         for count, movie in enumerate(movies):
             if util.abortRequested() or (not(HIDE_MOVIES) and progress.iscanceled()):
                 self.writeResume(count)
@@ -63,7 +61,7 @@ class Movies:
             if count >= resume:
                 if not(HIDE_MOVIES):
                     progress.update((count * 100) // total, "%s %s" % (util.l("Searching_for"), movie["label"]))
-                updated += self.updateMovie(movie, httphandler)
+                updated += self.updateMovie(movie)
         else:
             util.deleteF("resume_movies")
             util.writeDate("movies")
@@ -77,11 +75,11 @@ class Movies:
             progress.close()
             util.dialogOk(util.l("Completed"), text)
 
-    def updateMovie(self, movie, httphandler):
+    def updateMovie(self, movie):
         if movie["imdbnumber"] == "":
             util.logWarning("%s: no IMDb id" % movie["label"])
         else:
-            imdb = imdbMovie(movie["imdbnumber"], httphandler)
+            imdb = imdbMovie(movie["imdbnumber"])
 
             if imdb.error():
                 util.logError("%s: problem with omdbapi.com" % movie["label"])
