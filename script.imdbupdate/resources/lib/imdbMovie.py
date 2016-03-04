@@ -3,7 +3,7 @@
 # by Jandalf   #
 ################
 
-import httplib, socket, json, util
+import urllib2, socket, json, util
 
 RATING_DIFF = 0.001
 ENABLE_DIFF = util.settingBool("enableDiff")
@@ -11,32 +11,31 @@ SEPARATOR = util.setting("separator").strip()
 
 class imdbMovie(object):
     
-    def __init__(self, imdbID, httphandler):
+    def __init__(self, imdbID):
         self.__rating = ""
         self.__votes = ""
         self.__error = False
         self.__imdbID = imdbID
         
-        self.getData(httphandler)
+        self.getData()
 
-    def getData(self, httphandler):
+    def getData(self):
         try:
-            httphandler.request("GET", "/?i=%s" % self.__imdbID)
-            response = httphandler.getresponse()
-        except (httplib.HTTPException, socket.timeout, socket.gaierror, socket.error):
+            url="http://omdbapi.com/?i=%s" % self.__imdbID
+            request = urllib2.Request(url)
+            req = urllib2.urlopen(request)
+        except:
+            log('error response from github')
             self.__error = True
         else:
-            if response.status == 200:
-                try:
-                    data = json.loads(response.read().decode('utf8'))
-                    if "error" in data or data["Response"] == "False":
-                        self.__error = True
-                    else:
-                        self.__rating = data["imdbRating"]
-                        self.__votes = int(data["imdbVotes"].replace(",", ""))
-                except:
+            try:
+                data = json.loads(req.read().decode('utf8'))
+                if "error" in data or data["Response"] == "False":
                     self.__error = True
-            else:
+                else:
+                    self.__rating = data["imdbRating"]
+                    self.__votes = int(data["imdbVotes"].replace(",", ""))
+            except:
                 self.__error = True
 
     def shouldUpdate(self, old):
